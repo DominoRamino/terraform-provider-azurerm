@@ -74,7 +74,8 @@ func (r MysqlFlexibleServerConfigurationListResource) List(ctx context.Context, 
 	results = resp.Items
 
 	stream.Results = func(push func(list.ListResult) bool) {
-		for _, dbConfig := range results {
+		for idx, dbConfig := range results {
+			fmt.Println(idx)
 			result := request.NewListResult(ctx)
 			result.DisplayName = pointer.From(dbConfig.Name)
 
@@ -92,7 +93,7 @@ func (r MysqlFlexibleServerConfigurationListResource) List(ctx context.Context, 
 				return
 			}
 
-			if done := sdk.EncodeListResult(ctx, rd, result, push); done {
+			if proceed := sdk.EncodeListResult(ctx, rd, result, push); !proceed {
 				return
 			}
 		}

@@ -111,7 +111,7 @@ type FrameworkListWrappedResourceWithConfig interface {
 	ListResourceConfigSchema(ctx context.Context, request list.ListResourceSchemaRequest, response *list.ListResourceSchemaResponse)
 }
 
-func EncodeListResult(ctx context.Context, resourceData *terraformschema.ResourceData, result list.ListResult, push func(list.ListResult) bool) (done bool) {
+func EncodeListResult(ctx context.Context, resourceData *terraformschema.ResourceData, result list.ListResult, push func(list.ListResult) bool) (proceed bool) {
 	tfTypeIdentity, err := resourceData.TfTypeIdentityState()
 	if err != nil {
 		SetListIteratorErrorDiagnostic(result, push, "converting Identity State", err)
@@ -135,8 +135,8 @@ func EncodeListResult(ctx context.Context, resourceData *terraformschema.Resourc
 	}
 
 	if !push(result) {
-		return true
+		return
 	}
 
-	return
+	return true
 }
