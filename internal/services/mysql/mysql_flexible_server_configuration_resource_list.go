@@ -92,7 +92,9 @@ func (r MysqlFlexibleServerConfigurationListResource) List(ctx context.Context, 
 				return
 			}
 
-			sdk.EncodeListResult(ctx, rd, result, push)
+			if done := sdk.EncodeListResult(ctx, rd, result, push); done {
+				return
+			}
 		}
 	}
 }
